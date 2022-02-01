@@ -1,6 +1,7 @@
 from threading import Thread, Lock
 
 from Atom import Atom
+from constants import MAX_THREADS, MESSAGE_LENGTH
 
 class RingThread(Thread):
 
@@ -16,10 +17,10 @@ class RingThread(Thread):
 
     def processMessage(self):
         with self.messageLock:
-            for i in range(80):
+            for i in range(MESSAGE_LENGTH):
                 if not self.message[i].isupper():
                     self.message[i] = self.message[i].upper()
-                    RingThread.currentThread.update(lambda x: (x + 1) % 30)
+                    RingThread.currentThread.update(lambda x: (x + 1) % MAX_THREADS)
                     return
             
             print(''.join(self.message))
